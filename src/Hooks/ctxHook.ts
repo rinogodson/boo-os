@@ -8,7 +8,7 @@ const useCtx = <T extends object>(initialState: T) => {
   };
 
   const mergeCtx = (part: Partial<T>) => {
-    setAppCtx((p) => ({ ...p, part }));
+    setAppCtx((p) => ({ ...p, ...part }));
   };
 
   return { ctx: appCtx, setCtx, mergeCtx };
@@ -23,8 +23,8 @@ const setVal = (o: any, p: string, v: any): any => {
 
   let current = neoObj;
 
-  for (let i = 0; i < p.length; i++) {
-    const key = p[i];
+  for (let i = 0; i < parts.length - 1; i++) {
+    const key = parts[i];
     const nextIsArrayIndex = /^\d+$/.test(parts[i + 1]);
     if (current[key] === undefined) {
       current[key] = nextIsArrayIndex ? [] : {};
