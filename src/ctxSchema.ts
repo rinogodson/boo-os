@@ -1,5 +1,6 @@
 const ctx = {
-  word: "hello",
+  locked: true,
+  password: "",
 };
 
 export default ctx;
