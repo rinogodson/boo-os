@@ -18,21 +18,21 @@ body:before {
     linear-gradient(0deg, transparent 70%, rgba(0, 0, 0, 0.9) 10%),
     linear-gradient(90deg, transparent 70%, rgba(0, 0, 0, 0.9) 5%);
   background-size: 2px 2px;
-  border-radius: 5em;
+  border-radius: 2em;
   corner-shape: squircle;
   pointer-events: none;
   will-change: auto;
-  animation: flicker 100ms infinite;
+  /* animation: flicker 100ms infinite; */
 }
 
 @keyframes flicker {
   0%,
   100% {
     opacity: 0.9;
-    transform: translateY(0.5px);
+    /* transform: translateY(0.5px); */
   }
   50% {
     opacity: 1;
-    transform: translateY(-0.5px);
+    /* transform: translateY(-0.5px); */
   }
 }
