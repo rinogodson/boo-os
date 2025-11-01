@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { MoveDiagonal, X } from "lucide-react";
 
 function Window({
+  spaceRef,
   c,
   index,
   children,
@@ -17,6 +18,7 @@ function Window({
   minH,
   resizable,
 }: {
+  spaceRef: any;
   c: { setCtx: Function; ctx: { windows: any } };
   index: number;
   children: any;
@@ -33,6 +35,7 @@ function Window({
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
+  const [dimensions, setDimensions] = useState({ w: 0, h: 0 });
   const dragOffset = useRef({ x: 0, y: 0 });
   const resizeInfo = useRef({
     dir: "",
@@ -47,6 +50,15 @@ function Window({
     if (max !== undefined) val = Math.min(max, val);
     return val;
   };
+
+  useEffect(() => {
+    if (spaceRef.current) {
+      setDimensions({
+        w: spaceRef.current.offsetWidth,
+        h: spaceRef.current.offsetHeight,
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -138,7 +150,15 @@ function Window({
               className="text-red-300 hover:opacity-100 opacity-0 w-full h-full"
             />
           </div>
-          <div className="h-full aspect-square bg-green-600 border-2 border-white/20 active:shadow-[0_0_40px_2px_rgba(0,255,0,0.2)] rounded-full active:bg-green-500 flex justify-center items-center">
+          <div
+            onClick={() => {
+              c.setCtx(`windows[${index}].width`, dimensions.w - 40);
+              c.setCtx(`windows[${index}].height`, dimensions.h - 80);
+              c.setCtx(`windows[${index}].posX`, 0);
+              c.setCtx(`windows[${index}].posY`, 0);
+            }}
+            className="h-full aspect-square bg-green-600 border-2 border-white/20 active:shadow-[0_0_40px_2px_rgba(0,255,0,0.2)] rounded-full active:bg-green-500 flex justify-center items-center"
+          >
             <MoveDiagonal
               size={13}
               className="text-green-300 hover:opacity-100 opacity-0 w-full h-full"
@@ -165,7 +185,7 @@ function Window({
 
             c.setCtx("windows", [...newArr]);
           }}
-          className="w-full h-full flex justify-center items-center font-bold text-sm cursor-grab"
+          className="w-full h-full flex justify-center items-center font-bold text-sm cursor-grab active:cursor-grabbing"
         >
           {title}
         </div>

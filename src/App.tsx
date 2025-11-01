@@ -3,15 +3,17 @@
 import { AnimatePresence, motion, spring } from "motion/react";
 import ctx from "./ctxSchema";
 import useCtx from "./Hooks/ctxHook";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Webcam from "react-webcam";
 import Window from "./Components/Programs/Window";
 import AppIcon from "./Components/Programs/AppIcon";
 import programWindows from "./programCtx";
+import Video from "./Components/Programs/Finder/MediaPlayers/Video";
 
 function App() {
   const c = useCtx(ctx);
 
+  const spaceRef = useRef(null);
   useEffect(() => {
     const update = () => {
       const now = new Date();
@@ -32,6 +34,7 @@ function App() {
   return (
     <>
       <motion.div
+        ref={spaceRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         id="cnt"
@@ -115,6 +118,7 @@ function App() {
                 const Comp = programWindows[item.comp];
                 return (
                   <Window
+                    spaceRef={spaceRef}
                     c={c}
                     key={item.uid}
                     index={i}
@@ -134,6 +138,7 @@ function App() {
                 );
               })}
           </AnimatePresence>
+          {!c.ctx.locked && <Video />}
           {!c.ctx.locked && (
             <>
               <motion.div
