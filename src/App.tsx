@@ -1,8 +1,13 @@
+//    This code is haunted, proceed with care.   
+
 import { AnimatePresence, motion, spring } from "motion/react";
 import ctx from "./ctxSchema";
 import useCtx from "./Hooks/ctxHook";
 import { useEffect } from "react";
 import Webcam from "react-webcam";
+import Window from "./Components/Programs/Window";
+import AppIcon from "./Components/Programs/AppIcon";
+import programWindows from "./programCtx";
 
 function App() {
   const c = useCtx(ctx);
@@ -104,18 +109,33 @@ function App() {
           )}
         </AnimatePresence>
         <div className="bg-[url(/bg.webp)] w-full h-full bg-cover bg-no-repeat">
+          <AnimatePresence>
+            {!c.ctx.locked &&
+              c.ctx.windows.map((item, i) => {
+                const Comp = programWindows[item.comp];
+                return (
+                  <Window
+                    c={c}
+                    key={item.uid}
+                    index={i}
+                    title={item.title}
+                    posX={item.posX}
+                    posY={item.posY}
+                    width={item.width}
+                    height={item.height}
+                    maxH={item.maxH}
+                    maxW={item.maxW}
+                    minH={item.minH}
+                    minW={item.minW}
+                    resizable={item.resizable}
+                  >
+                    <Comp />
+                  </Window>
+                );
+              })}
+          </AnimatePresence>
           {!c.ctx.locked && (
             <>
-              <motion.div
-                initial={{ translateY: "7.5rem" }}
-                animate={{ translateY: "0" }}
-                transition={{
-                  type: "tween",
-                  ease: [0, 0, 0.2, 1],
-                  duration: 0.5,
-                }}
-                className="rounded-[3em] [corner-shape:squircle] border-2 border-white/10 backdrop-blur-xl backdrop-brightness-150  h-30 w-200 bg-black/10 absolute bottom-3 left-[50%] -translate-x-[50%]"
-              ></motion.div>
               <motion.div
                 initial={{ translateY: "-2.5rem" }}
                 animate={{ translateY: "0" }}
@@ -130,6 +150,22 @@ function App() {
                 <div>
                   {c.ctx.time} . {c.ctx.date}
                 </div>
+              </motion.div>
+              <motion.div
+                initial={{ translateY: "5.25rem" }}
+                animate={{ translateY: "0" }}
+                transition={{
+                  type: "tween",
+                  ease: [0, 0, 0.2, 1],
+                  duration: 0.5,
+                }}
+                className="p-3 flex gap-3 scale-70 hover:scale-100 transition-all duration-100 origin-bottom rounded-[3em] [corner-shape:squircle] border-white/10 backdrop-blur-xl backdrop-brightness-150  h-30 w-fit bg-black/10 absolute bottom-3 left-[50%] -translate-x-[50%] shadow-[inset_0_1px_1px_1px_rgba(255,255,255,0.1),0_1px_1px_1px_rgba(0,0,0,0.1)]"
+              >
+                {c.ctx.apps.map((item, i) => {
+                  return (
+                    <AppIcon imgSrc={item.icon} title={item.name} c={c} i={i} />
+                  );
+                })}
               </motion.div>
             </>
           )}
