@@ -25,10 +25,13 @@ function Finder() {
   });
 
   const [currentPath, setCurrentPath] = useState(["Home"]);
-  const currentDir = currentPath.reduce((acc, key) => acc[key], fileTree);
+  const currentDir = currentPath.reduce(
+    (acc: any, key: any) => acc[key],
+    fileTree,
+  );
   const items = Object.keys(currentDir);
 
-  function handleClick(item) {
+  function handleClick(item: any) {
     if (currentDir[item] && typeof currentDir[item] === "object") {
       setCurrentPath([...currentPath, item]);
     }

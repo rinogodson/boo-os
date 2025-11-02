@@ -151,8 +151,6 @@ function Calculator() {
 const Button = ({
   onClick,
   child,
-  val,
-  colored,
 }: {
   onClick: any;
   child: any;
