@@ -1,4 +1,6 @@
 const ctx: {
+  wallpaper: string;
+  wallpapers: string[];
   locked: Boolean;
   password: string;
   time: string;
@@ -32,6 +34,8 @@ const ctx: {
     comp: any;
   }[];
 } = {
+  wallpaper: "/bg.webp",
+  wallpapers: ["/bg.webp", "/bg1.webp", "/bg2.webp", "/bg3.webp"],
   locked: true,
   password: "",
   time: "",

@@ -8,10 +8,15 @@ import Webcam from "react-webcam";
 import Window from "./Components/Programs/Window";
 import AppIcon from "./Components/Programs/AppIcon";
 import programWindows from "./programCtx";
-import Video from "./Components/Programs/Finder/MediaPlayers/Video";
+// import Video from "./Components/Programs/Finder/MediaPlayers/Video";
+//
+
+let pack: { setCtx: Function; ctx: typeof ctx };
 
 function App() {
   const c = useCtx(ctx);
+
+  pack = c;
 
   const spaceRef = useRef(null);
   useEffect(() => {
@@ -111,7 +116,10 @@ function App() {
             </motion.div>
           )}
         </AnimatePresence>
-        <div className="bg-[url(/bg.webp)] w-full h-full bg-cover bg-no-repeat">
+        <div
+          style={{ background: `url(${c.ctx.wallpaper})` }}
+          className=" w-full h-full bg-cover bg-no-repeat"
+        >
           <AnimatePresence>
             {!c.ctx.locked &&
               c.ctx.windows.map((item, i) => {
@@ -133,12 +141,12 @@ function App() {
                     minW={item.minW}
                     resizable={item.resizable}
                   >
-                    <Comp />
+                    <Comp c={c} />
                   </Window>
                 );
               })}
           </AnimatePresence>
-          {!c.ctx.locked && <Video />}
+          {/* {!c.ctx.locked && <Video />} */}
           {!c.ctx.locked && (
             <>
               <motion.div
@@ -180,5 +188,7 @@ function App() {
     </>
   );
 }
+
+export { pack };
 
 export default App;
