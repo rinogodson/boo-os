@@ -1,6 +1,6 @@
 //    This code is haunted, proceed with care.   
 
-import { AnimatePresence, motion, spring } from "motion/react";
+import { AnimatePresence, easeOut, motion, spring } from "motion/react";
 import ctx from "./ctxSchema";
 import useCtx from "./Hooks/ctxHook";
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +16,8 @@ import key2 from "/sounds/key2.mp3";
 
 import theme from "/sounds/theme.mp3";
 
+import jump from "/sounds/jump.mp3";
+
 // import Video from "./Components/Programs/Finder/MediaPlayers/Video";
 //
 
@@ -23,6 +25,7 @@ let pack: { setCtx: Function; ctx: typeof ctx };
 
 function App() {
   const c = useCtx(ctx);
+  const [playingTheme, setPlayingTheme] = useState(false);
 
   const [key, setKey] = useState(1);
 
@@ -35,15 +38,51 @@ function App() {
     audio.volume = volume;
     audio.loop = loop;
     audio.play();
+    return audio;
   };
 
   pack = c;
 
   const spaceRef = useRef(null);
+  const themeAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    play(theme, 0.05, true);
+    if (c.ctx.locked) return;
+    const delay = Math.floor(Math.random() * 4000) + 8000;
+
+    const timer = setTimeout(() => {
+      if (themeAudioRef.current) {
+        themeAudioRef.current.pause();
+        themeAudioRef.current.currentTime = 0;
+      }
+      document.body.classList.add("shake");
+      setTimeout(() => document.body.classList.remove("shake"), 1000);
+
+      const audio = new Audio(jump);
+      audio.volume = 1.0;
+      audio.play().catch((err) => console.error("failure :( ", err));
+      setGhost(true);
+    }, delay);
+
+    return () => clearTimeout(timer);
   }, [c.ctx.locked]);
+
+  useEffect(() => {
+    if (c.ctx.locked === true) return;
+    if (playingTheme) return;
+    const audio = play(theme, 0.05, true);
+    themeAudioRef.current = audio;
+    setPlayingTheme(true);
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+      themeAudioRef.current = null;
+      setPlayingTheme(false);
+    };
+  }, [c.ctx.locked]);
+
+  const [ghost, setGhost] = useState(false);
 
   useEffect(() => {
     const update = () => {
@@ -64,6 +103,33 @@ function App() {
 
   return (
     <>
+      {ghost && (
+        <motion.div
+          initial={{
+            opacity: 0.5,
+            filter: "blur(100px)",
+            scale: 0.9,
+            background: "rgba(0,0,0,0)",
+          }}
+          animate={{
+            opacity: 1,
+            filter: "blur(0px)",
+            scale: 1,
+            background: "rgba(0,0,0,0.8)",
+          }}
+          transition={{ duration: 0.2, type: "tween", ease: easeOut }}
+          className="w-screen flex flex-col justify-center items-center h-screen absolute z-100000"
+        >
+          <img
+            src="/ghost.webp"
+            draggable={false}
+            className="h-[calc(100%-10rem)]"
+          />
+          <h1 className="text-5xl text-red-600/20 h-20 font-[Jolly_Lodger] animate-pulse">
+            GO AWAY FROM MY OS!! CLOSE THIS NOWWW!!
+          </h1>
+        </motion.div>
+      )}
       <motion.div
         onKeyDown={() => {
           switch (key) {
