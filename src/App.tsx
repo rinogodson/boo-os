@@ -3,11 +3,19 @@
 import { AnimatePresence, motion, spring } from "motion/react";
 import ctx from "./ctxSchema";
 import useCtx from "./Hooks/ctxHook";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import Window from "./Components/Programs/Window";
 import AppIcon from "./Components/Programs/AppIcon";
 import programWindows from "./programCtx";
+
+import clickup from "/sounds/clickup.mp3";
+import clickdown from "/sounds/clickdown.mp3";
+import key1 from "/sounds/key1.mp3";
+import key2 from "/sounds/key2.mp3";
+
+import theme from "/sounds/theme.mp3";
+
 // import Video from "./Components/Programs/Finder/MediaPlayers/Video";
 //
 
@@ -16,9 +24,27 @@ let pack: { setCtx: Function; ctx: typeof ctx };
 function App() {
   const c = useCtx(ctx);
 
+  const [key, setKey] = useState(1);
+
+  const play = (
+    sound: typeof clickup,
+    volume: number,
+    loop: boolean = false,
+  ) => {
+    const audio = new Audio(sound);
+    audio.volume = volume;
+    audio.loop = loop;
+    audio.play();
+  };
+
   pack = c;
 
   const spaceRef = useRef(null);
+
+  useEffect(() => {
+    play(theme, 0.05, true);
+  }, [c.ctx.locked]);
+
   useEffect(() => {
     const update = () => {
       const now = new Date();
@@ -39,6 +65,23 @@ function App() {
   return (
     <>
       <motion.div
+        onKeyDown={() => {
+          switch (key) {
+            case 1:
+              play(key1, 0.1);
+              break;
+            case 2:
+              play(key2, 0.1);
+              break;
+          }
+          setKey(key < 2 ? key + 1 : 1);
+        }}
+        onMouseDown={() => {
+          play(clickdown, 0.1);
+        }}
+        onMouseUp={() => {
+          play(clickup, 0.1);
+        }}
         ref={spaceRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
