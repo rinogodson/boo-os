@@ -141,6 +141,7 @@ function Window({
                 ...c.ctx.windows.slice(index + 1),
               ];
 
+              c.setCtx("cApp", "Finder");
               c.setCtx("windows", [...newArr]);
             }}
             className="h-full aspect-square bg-red-600 border-2 border-white/20 active:shadow-[0_0_40px_2px_rgba(255,0,0,0.2)] rounded-full active:bg-red-500 flex justify-center items-center"
