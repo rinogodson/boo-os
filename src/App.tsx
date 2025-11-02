@@ -48,7 +48,7 @@ function App() {
 
   useEffect(() => {
     if (c.ctx.locked) return;
-    const delay = Math.floor(Math.random() * 4000) + 8000;
+    const delay = Math.floor(Math.random() * 8000) + 12000;
 
     const timer = setTimeout(() => {
       if (themeAudioRef.current) {
