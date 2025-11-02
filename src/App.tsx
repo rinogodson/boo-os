@@ -83,7 +83,7 @@ function App() {
               <div className="flex flex-col justify-center items-center gap-1">
                 <div className="w-20 overflow-hidden aspect-square rounded-full bg-black">
                   <Webcam
-                    className="h-full w-full"
+                    className="pointer-events-none h-full w-full"
                     videoConstraints={{
                       width: 300,
                       height: 300,
@@ -159,7 +159,7 @@ function App() {
                 }}
                 className="font-[New_Rocker] px-5 text-2xl flex justify-between items-center border-b-2 border-white/10 backdrop-blur-xl h-10 w-full bg-black/10 absolute top-0 left-[50%] -translate-x-[50%]"
               >
-                <div>Calculator</div>
+                <div>{c.ctx.cApp}</div>
                 <div>
                   {c.ctx.time} . {c.ctx.date}
                 </div>
@@ -167,12 +167,13 @@ function App() {
               <motion.div
                 initial={{ translateY: "5.25rem" }}
                 animate={{ translateY: "0" }}
+                style={{ scale: c.ctx.dockSize }}
                 transition={{
                   type: "tween",
                   ease: [0, 0, 0.2, 1],
                   duration: 0.5,
                 }}
-                className="p-3 flex gap-3 scale-70 hover:scale-100 transition-all duration-100 origin-bottom rounded-[3em] [corner-shape:squircle] border-white/10 backdrop-blur-xl backdrop-brightness-150  h-30 w-fit bg-black/10 absolute bottom-3 left-[50%] -translate-x-[50%] shadow-[inset_0_1px_1px_1px_rgba(255,255,255,0.1),0_1px_1px_1px_rgba(0,0,0,0.1)]"
+                className="p-3 flex gap-3 hover:scale-100 transition-all duration-100 origin-bottom rounded-[3em] [corner-shape:squircle] border-white/10 backdrop-blur-xl backdrop-brightness-150  h-30 w-fit bg-black/10 absolute bottom-3 left-[50%] -translate-x-[50%] shadow-[inset_0_1px_1px_1px_rgba(255,255,255,0.1),0_1px_1px_1px_rgba(0,0,0,0.1)]"
               >
                 {c.ctx.apps.map((item, i) => {
                   return (

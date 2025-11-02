@@ -1,4 +1,6 @@
 const ctx: {
+  dockSize: number;
+  cApp: string;
   wallpaper: string;
   wallpapers: string[];
   locked: Boolean;
@@ -34,6 +36,8 @@ const ctx: {
     comp: any;
   }[];
 } = {
+  dockSize: 0.7,
+  cApp: "Finder",
   wallpaper: "/bg.webp",
   wallpapers: ["/bg.webp", "/bg1.webp", "/bg2.webp", "/bg3.webp"],
   locked: true,

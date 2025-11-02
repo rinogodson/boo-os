@@ -33,6 +33,8 @@ function AppIcon({
           uid: String(Date.now()) + Math.random().toString(36).slice(2),
         };
 
+        c.setCtx("cApp", c.ctx.apps[i].name);
+
         c.setCtx("windows", [...c.ctx.windows, newWindow]);
       }}
       onMouseOver={() => sethovering(true)}

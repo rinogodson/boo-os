@@ -177,6 +177,7 @@ function Window({
             setIsDragging(false);
           }}
           onClick={() => {
+            c.setCtx("cApp", title);
             const newArr = structuredClone(c.ctx.windows);
             [newArr[index], newArr[newArr.length - 1]] = [
               newArr[newArr.length - 1],
